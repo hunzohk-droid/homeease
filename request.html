@@ -120,19 +120,6 @@
       color: var(--muted);
     }
 
-    .demo-notice {
-      margin-bottom: 24px;
-      padding: 16px 20px;
-      border: 1px solid #fcd34d;
-      border-radius: 12px;
-      background: #fffbeb;
-      color: #78350f;
-    }
-
-    .demo-notice p {
-      margin: 0;
-    }
-
     form {
       padding: 32px;
       border: 1px solid #e2e8f0;
@@ -345,22 +332,20 @@
       Tell us what you need and choose your preferred date and time.
     </p>
 
-    <div class="demo-notice">
-      <p>
-        <strong>DEMO MODE:</strong> This form saves your request only in
-        this browser. It does not send anything to HomeEase.
-        Use sample contact details and addresses.
-      </p>
-    </div>
-
     <noscript>
-      <p>Enable JavaScript to use this demo request form.</p>
+      <p>Enable JavaScript to use the service request form.</p>
     </noscript>
 
     <form id="request-form" novalidate>
       <p class="required-note">Fields marked * are required.</p>
 
-      <div id="form-message" class="form-message" role="alert" hidden></div>
+      <div
+        id="form-message"
+        class="form-message"
+        role="alert"
+        tabindex="-1"
+        hidden
+      ></div>
 
       <div class="form-grid">
         <div class="field full-width">
@@ -380,7 +365,7 @@
           <label for="full-name">Full name *</label>
           <input
             id="full-name"
-            name="fullName"
+            name="name"
             type="text"
             autocomplete="name"
             maxlength="120"
@@ -424,18 +409,20 @@
           <label for="area">City / area *</label>
           <select
             id="area"
-            name="area"
+            name="city"
             required
             aria-describedby="area-hint area-error"
           >
             <option value="">Choose an area</option>
-            <!-- Replace these demo areas with real coverage before launch. -->
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
             <option value="demo-central">Central Area (demo)</option>
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
             <option value="demo-north">North Area (demo)</option>
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
             <option value="demo-south">South Area (demo)</option>
           </select>
           <p id="area-hint" class="hint">
-            Sample areas for this demo.
+            Select the area where the service is needed.
           </p>
           <p id="area-error" class="error"></p>
         </div>
@@ -457,7 +444,7 @@
           <label for="preferred-date">Preferred date *</label>
           <input
             id="preferred-date"
-            name="preferredDate"
+            name="date"
             type="date"
             required
             aria-describedby="preferred-date-hint preferred-date-error"
@@ -472,7 +459,7 @@
           <label for="time-window">Preferred time window *</label>
           <select
             id="time-window"
-            name="timeWindow"
+            name="time_window"
             required
             aria-describedby="time-window-error"
           >
@@ -488,7 +475,7 @@
           <label for="job-details">Job details (optional)</label>
           <textarea
             id="job-details"
-            name="jobDetails"
+            name="details"
             maxlength="500"
             aria-describedby="job-details-hint job-details-error"
           ></textarea>
@@ -554,15 +541,18 @@
         permission: document.getElementById("permission")
       };
 
-      // success.html can read this array and find the request using
-      // the "reference" query parameter in its URL.
       const STORAGE_KEY = "homeeaseRequests";
       let submitting = false;
       let submitted = false;
+      let pendingConfirmation = null;
 
-      function showFormMessage(message) {
+      function showFormMessage(message, focus = false) {
         formMessage.textContent = message;
         formMessage.hidden = !message;
+
+        if (message && focus) {
+          formMessage.focus();
+        }
       }
 
       function localDateString(date = new Date()) {
@@ -572,8 +562,8 @@
         return `${year}-${month}-${day}`;
       }
 
-      // Demo dates use the visitor's local timezone.
-      // Phase B should validate dates in the business's timezone.
+      // Browser validation uses the visitor's local date.
+      // The server must also validate dates using the business timezone.
       function updateMinimumDate() {
         fields.preferredDate.min = localDateString();
       }
@@ -686,11 +676,13 @@
           }
 
           case "email":
-            if (value) {
-              field.value = value;
-              if (field.validity.typeMismatch || value.length > 254) {
-                error = "Please enter a valid email address.";
-              }
+            field.value = value;
+
+            if (
+              value &&
+              (field.validity.typeMismatch || value.length > 254)
+            ) {
+              error = "Please enter a valid email address.";
             }
             break;
 
@@ -764,124 +756,178 @@
         characterCount.textContent = fields.jobDetails.value.length;
       });
 
-      function generateReference(existingRequests) {
-        const year = new Date().getFullYear();
-        const usedReferences = new Set(
-          existingRequests.map((request) => request.reference)
-        );
+      function saveConfirmation(request) {
+        const savedValue = localStorage.getItem(STORAGE_KEY);
+        const existingRequests =
+          savedValue === null ? [] : JSON.parse(savedValue);
 
-        for (let attempt = 0; attempt < 100; attempt++) {
-          const bytes = new Uint8Array(4);
-          crypto.getRandomValues(bytes);
-
-          const suffix = Array.from(
-            bytes,
-            (byte) => byte.toString(16).padStart(2, "0")
-          ).join("").toUpperCase();
-
-          const reference = `HE-${year}-${suffix}`;
-
-          if (!usedReferences.has(reference)) {
-            return reference;
-          }
+        if (
+          !Array.isArray(existingRequests) ||
+          existingRequests.some(
+            (item) => !item || typeof item !== "object"
+          )
+        ) {
+          throw new Error("Stored request data is invalid.");
         }
 
-        throw new Error("Could not generate a unique reference.");
+        const index = existingRequests.findIndex(
+          (item) => item.reference === request.reference
+        );
+
+        if (index === -1) {
+          existingRequests.push(request);
+        } else {
+          existingRequests[index] = request;
+        }
+
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(existingRequests)
+        );
       }
 
-      form.addEventListener("submit", (event) => {
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         if (submitting || submitted) return;
 
         showFormMessage("");
-        updateMinimumDate();
 
-        let firstInvalidField = null;
+        // If the server already accepted the request, retry only the
+        // local confirmation save instead of creating another request.
+        if (!pendingConfirmation) {
+          updateMinimumDate();
+          let firstInvalidField = null;
 
-        Object.values(fields).forEach((field) => {
-          if (!validateField(field) && !firstInvalidField) {
-            firstInvalidField = field;
+          Object.values(fields).forEach((field) => {
+            if (!validateField(field) && !firstInvalidField) {
+              firstInvalidField = field;
+            }
+          });
+
+          if (firstInvalidField) {
+            showFormMessage("Please check the highlighted fields.");
+            firstInvalidField.focus();
+            return;
           }
-        });
-
-        if (firstInvalidField) {
-          showFormMessage("Please check the highlighted fields.");
-          firstInvalidField.focus();
-          return;
         }
 
         submitting = true;
         submitButton.disabled = true;
-        submitButton.textContent = "Saving request…";
+        submitButton.textContent = "Sending request…";
+        form.setAttribute("aria-busy", "true");
 
         try {
-          // DEMO MODE: Phase B replaces this localStorage persistence
-          // with a real server API, server-side validation, and a database.
-          const savedValue = localStorage.getItem(STORAGE_KEY);
-          const existingRequests =
-            savedValue === null ? [] : JSON.parse(savedValue);
+          if (!pendingConfirmation) {
+            const selectedService = activeServices.find(
+              (service) => service.slug === fields.service.value
+            );
 
-          if (
-            !Array.isArray(existingRequests) ||
-            existingRequests.some(
-              (request) => !request || typeof request !== "object"
-            )
-          ) {
-            throw new Error("Stored demo requests are invalid.");
+            // Send exactly these nine keys to the server.
+            const payload = {
+              service: selectedService.slug,
+              name: fields.fullName.value.trim(),
+              phone: fields.phone.value.trim(),
+              email: fields.email.value.trim(),
+              city: fields.area.value,
+              address: fields.address.value.trim(),
+              date: fields.preferredDate.value,
+              time_window: fields.timeWindow.value,
+              details: fields.jobDetails.value.trim()
+            };
+
+            const areaName = fields.area.selectedOptions[0].textContent;
+            const timestamp = new Date().toISOString();
+
+            const response = await fetch("/api/request", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+              },
+              body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+              throw new Error("The server rejected the request.");
+            }
+
+            const result = await response.json();
+
+            if (
+              !result ||
+              typeof result.reference !== "string" ||
+              !result.reference.trim()
+            ) {
+              throw new Error("The server response is missing a reference.");
+            }
+
+            pendingConfirmation = {
+              reference: result.reference.trim(),
+              serviceSlug: payload.service,
+              serviceName: selectedService.name,
+              fullName: payload.name,
+              phone: payload.phone,
+              email: payload.email,
+              area: payload.city,
+              areaName,
+              address: payload.address,
+              preferredDate: payload.date,
+              timeWindow: payload.time_window,
+              jobDetails: payload.details,
+              permissionToContact: true,
+              consentTimestamp: timestamp,
+              createdAt: timestamp,
+              status: "New",
+
+              // Legacy compatibility: the existing success.html requires
+              // demoMode === true to find a saved request. The POST above
+              // is real. That unchanged page still displays demo wording.
+              demoMode: true
+            };
+
+            // Prevent edits while retrying a failed confirmation save.
+            Object.values(fields).forEach((field) => {
+              field.disabled = true;
+            });
           }
 
-          const selectedService = activeServices.find(
-            (service) => service.slug === fields.service.value
-          );
-          const timestamp = new Date().toISOString();
-          const reference = generateReference(existingRequests);
+          submitButton.textContent = "Saving confirmation…";
+          saveConfirmation(pendingConfirmation);
 
-          const request = {
-            reference,
-            serviceSlug: selectedService.slug,
-            serviceName: selectedService.name,
-            fullName: fields.fullName.value.trim(),
-            phone: fields.phone.value.trim(),
-            email: fields.email.value.trim(),
-            area: fields.area.value,
-            areaName: fields.area.selectedOptions[0].textContent,
-            address: fields.address.value.trim(),
-            preferredDate: fields.preferredDate.value,
-            timeWindow: fields.timeWindow.value,
-            jobDetails: fields.jobDetails.value.trim(),
-            permissionToContact: fields.permission.checked,
-            consentTimestamp: timestamp,
-            createdAt: timestamp,
-            status: "New",
-            demoMode: true
-          };
-
-          existingRequests.push(request);
-
-          localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(existingRequests)
+          window.location.assign(
+            `success.html?reference=${encodeURIComponent(
+              pendingConfirmation.reference
+            )}`
           );
 
           submitted = true;
-          submitButton.textContent = "Request saved";
-
-          window.location.assign(
-            `success.html?reference=${encodeURIComponent(reference)}`
-          );
+          submitButton.textContent = "Request received";
         } catch (error) {
-          showFormMessage(
-            "We couldn't save your demo request in this browser. " +
-            "Your entries are still here. Check that browser storage is " +
-            "available, then try again."
-          );
+          if (pendingConfirmation) {
+            showFormMessage(
+              `Your request was received. Reference: ${
+                pendingConfirmation.reference
+              }. We couldn't save the confirmation in this browser. ` +
+              "Allow browser storage, then select Retry Confirmation. " +
+              "This will not send another request.",
+              true
+            );
+          } else {
+            showFormMessage(
+              "Something went wrong, please try again.",
+              true
+            );
+          }
         } finally {
           submitting = false;
+          form.removeAttribute("aria-busy");
 
           if (!submitted) {
             submitButton.disabled = false;
-            submitButton.textContent = "Send Request";
+            submitButton.textContent = pendingConfirmation
+              ? "Retry Confirmation"
+              : "Send Request";
           }
         }
       });
