@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="View your HomeEase demo service request summary.">
+  <title>Request Received | HomeEase</title>
+
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --text: #0f172a;
+      --muted: #475569;
+      --background: #f8fafc;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--background);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--primary);
+      text-underline-offset: 4px;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(960px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 20px;
+      padding: 12px;
+      background: white;
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      background: white;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 80px;
+    }
+
+    .logo {
+      color: var(--text);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .navigation {
+      display: flex;
+      gap: 20px;
+    }
+
+    .navigation a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--muted);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    main {
+      min-height: 75vh;
+      padding-block: 48px 64px;
+    }
+
+    .panel {
+      max-width: 700px;
+      margin-inline: auto;
+      padding: 40px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: white;
+      box-shadow: 0 8px 24px rgb(15 23 42 / 4%);
+    }
+
+    .panel-heading {
+      text-align: center;
+    }
+
+    .success-icon {
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      background: #ccfbf1;
+      color: var(--primary-dark);
+      font-size: 36px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(28px, 5vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+
+    .intro {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .demo-notice {
+      margin-top: 24px;
+      padding: 16px 20px;
+      border: 1px solid #fcd34d;
+      border-radius: 12px;
+      background: #fffbeb;
+      color: #78350f;
+      font-size: 14px;
+    }
+
+    .demo-notice p {
+      margin: 0;
+    }
+
+    .summary {
+      margin: 28px 0;
+      padding: 8px 24px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--background);
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      gap: 16px;
+      padding-block: 16px;
+    }
+
+    .summary-row + .summary-row {
+      border-top: 1px solid var(--border);
+    }
+
+    dt {
+      color: var(--muted);
+    }
+
+    dd {
+      margin: 0;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .reference {
+      color: var(--primary-dark);
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      letter-spacing: 1px;
+    }
+
+    .next-step {
+      padding: 20px;
+      border-radius: 12px;
+      background: #f0fdfa;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .next-step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .next-step p + p {
+      margin-top: 10px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      background: var(--primary-dark);
+    }
+
+    .secondary-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 10px;
+      font-weight: 600;
+    }
+
+    .message-panel {
+      text-align: center;
+    }
+
+    .message-panel p {
+      color: var(--muted);
+    }
+
+    .site-footer {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      background: white;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .site-footer p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: calc(100% - 32px);
+      }
+
+      .header-content {
+        min-height: 72px;
+      }
+
+      .logo {
+        font-size: 23px;
+      }
+
+      .navigation {
+        gap: 14px;
+        font-size: 14px;
+      }
+
+      main {
+        padding-block: 32px 40px;
+      }
+
+      .panel {
+        padding: 28px 24px;
+      }
+
+      .summary {
+        padding-inline: 18px;
+      }
+
+      .summary-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to request summary</a>
+
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="logo" href="index.html" aria-label="HomeEase home">
+        Home<span>Ease</span>
+      </a>
+
+      <nav class="navigation" aria-label="Main navigation">
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <section id="success-panel" class="panel" aria-labelledby="success-heading" hidden>
+      <div class="panel-heading">
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <h1 id="success-heading">Your request has been received</h1>
+        <p class="intro">Here is a summary of your service request.</p>
+      </div>
+
+      <div class="demo-notice">
+        <p>
+          <strong>DEMO MODE:</strong> Your request was saved only in this
+          browser. It has not been sent to HomeEase, and no team member
+          will contact you from this demo.
+        </p>
+      </div>
+
+      <dl class="summary">
+        <div class="summary-row">
+          <dt>Reference number</dt>
+          <dd id="request-reference" class="reference"></dd>
+        </div>
+
+        <div class="summary-row">
+          <dt>Service</dt>
+          <dd id="request-service"></dd>
+        </div>
+
+        <div class="summary-row">
+          <dt>Preferred date</dt>
+          <dd id="request-date"></dd>
+        </div>
+
+        <div class="summary-row">
+          <dt>Preferred time</dt>
+          <dd id="request-time"></dd>
+        </div>
+      </dl>
+
+      <div class="next-step">
+        <h2>Next step <span>(live website)</span></h2>
+        <p>Our team will contact you to confirm availability and pricing.</p>
+        <p>Your preferred date and time are subject to availability.</p>
+      </div>
+
+      <div class="actions">
+        <a class="button" href="services.html">Browse Services</a>
+        <a class="secondary-link" href="index.html">Back to Home</a>
+      </div>
+    </section>
+
+    <section id="not-found-panel" class="panel message-panel" aria-labelledby="not-found-heading" hidden>
+      <h1 id="not-found-heading">We couldn't find your request</h1>
+      <p>
+        Demo requests are stored only in the browser where you submitted
+        them. Open the original link in that browser, or create a new
+        demo request.
+      </p>
+
+      <div class="actions">
+        <a class="button" href="request.html">Request a Service</a>
+        <a class="secondary-link" href="services.html">Browse Services</a>
+      </div>
+    </section>
+
+    <section id="storage-error-panel" class="panel message-panel" aria-labelledby="storage-error-heading" hidden>
+      <h1 id="storage-error-heading">We couldn't load your request</h1>
+      <p>
+        The saved demo data could not be read. Check that browser storage
+        is available, then refresh this page.
+      </p>
+
+      <div class="actions">
+        <a class="button" href="services.html">Browse Services</a>
+        <a class="secondary-link" href="request.html">Request a Service</a>
+      </div>
+    </section>
+
+    <noscript>
+      <div class="panel message-panel">
+        <h1>View your request summary</h1>
+        <p>Please enable JavaScript to read your saved demo request.</p>
+        <a href="services.html">Browse Services</a>
+      </div>
+    </noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>HomeEase · Home services, made simple.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const STORAGE_KEY = "homeeaseRequests";
+      const successPanel = document.getElementById("success-panel");
+      const notFoundPanel = document.getElementById("not-found-panel");
+      const storageErrorPanel = document.getElementById("storage-error-panel");
+
+      function showNotFound() {
+        document.title = "Request Not Found | HomeEase";
+        notFoundPanel.hidden = false;
+      }
+
+      function textOrFallback(value, fallback) {
+        return typeof value === "string" && value.trim()
+          ? value.trim()
+          : fallback;
+      }
+
+      function formatDate(value) {
+        if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+          return "Date not provided";
+        }
+
+        const [year, month, day] = value.split("-").map(Number);
+
+        // Construct a local date to avoid shifting the day through UTC.
+        const date = new Date(0);
+        date.setHours(12, 0, 0, 0);
+        date.setFullYear(year, month - 1, day);
+
+        if (
+          date.getFullYear() !== year ||
+          date.getMonth() !== month - 1 ||
+          date.getDate() !== day
+        ) {
+          return "Date not provided";
+        }
+
+        return new Intl.DateTimeFormat("en", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }).format(date);
+      }
+
+      const reference = (
+        new URLSearchParams(window.location.search).get("reference") || ""
+      ).trim();
+
+      // Match only the requested reference; do not display another request
+      // when the link is missing or incorrect.
+      if (!reference) {
+        showNotFound();
+        return;
+      }
+
+      let requests;
+
+      try {
+        // DEMO MODE: Phase B replaces localStorage lookup with an
+        // authorised server response.
+        const savedValue = localStorage.getItem(STORAGE_KEY);
+
+        if (savedValue === null) {
+          showNotFound();
+          return;
+        }
+
+        requests = JSON.parse(savedValue);
+
+        if (!Array.isArray(requests)) {
+          throw new Error("Invalid saved request data.");
+        }
+      } catch (error) {
+        document.title = "Request Unavailable | HomeEase";
+        storageErrorPanel.hidden = false;
+        return;
+      }
+
+      const request = requests.find(
+        (item) =>
+          item &&
+          typeof item === "object" &&
+          item.demoMode === true &&
+          item.reference === reference
+      );
+
+      if (!request) {
+        showNotFound();
+        return;
+      }
+
+      // Use textContent so stored values are never interpreted as HTML.
+      document.getElementById("request-reference").textContent =
+        request.reference;
+
+      document.getElementById("request-service").textContent =
+        textOrFallback(request.serviceName, "Home service");
+
+      document.getElementById("request-date").textContent =
+        formatDate(request.preferredDate);
+
+      document.getElementById("request-time").textContent =
+        textOrFallback(request.timeWindow, "Time not provided");
+
+      successPanel.hidden = false;
+    });
+  </script>
+</body>
+</html>

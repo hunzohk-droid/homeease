@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore HomeEase home services, from cleaning and plumbing to furniture assembly and painting.">
+  <title>Home Services | HomeEase</title>
+
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --text: #0f172a;
+      --muted: #475569;
+      --background: #f8fafc;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--background);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--primary);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(1200px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 20px;
+      padding: 12px 18px;
+      background: white;
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    .site-header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 80px;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .navigation {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .navigation a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .navigation a:hover,
+    .navigation a[aria-current="page"] {
+      color: var(--primary);
+    }
+
+    .hero {
+      padding: 64px 0 36px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0 auto 16px;
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+    }
+
+    .hero-description {
+      max-width: 580px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .search-area {
+      max-width: 640px;
+      margin: 32px auto 0;
+      text-align: left;
+    }
+
+    .search-area label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .search-area input {
+      width: 100%;
+      min-height: 56px;
+      padding: 14px 18px;
+      border: 1px solid #94a3b8;
+      border-radius: 12px;
+      background: white;
+      color: var(--text);
+    }
+
+    .search-area input::placeholder {
+      color: var(--muted);
+    }
+
+    .services-section {
+      padding-bottom: 64px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .filter-button {
+      min-height: 44px;
+      padding: 10px 18px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: white;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .filter-button:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .filter-button[aria-pressed="true"] {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
+
+    .results-count {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .service-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 0;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: white;
+      color: var(--text);
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgb(15 23 42 / 3%);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 12px 24px rgb(15 23 42 / 8%);
+    }
+
+    .service-icon {
+      display: grid;
+      place-items: center;
+      width: 60px;
+      height: 60px;
+      margin-bottom: 20px;
+      border-radius: 16px;
+      background: #f0fdfa;
+      font-size: 30px;
+    }
+
+    .service-category {
+      margin: 0 0 8px;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .service-card h2 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      line-height: 1.3;
+    }
+
+    .service-description {
+      margin: 0 0 24px;
+      color: var(--muted);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      width: 100%;
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .pricing {
+      color: var(--muted);
+    }
+
+    .view-service {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .empty-state,
+    .load-error {
+      padding: 48px 24px;
+      border: 1px dashed #94a3b8;
+      border-radius: 16px;
+      background: white;
+      text-align: center;
+    }
+
+    .empty-state p,
+    .load-error p {
+      margin-top: 0;
+      color: var(--muted);
+    }
+
+    .empty-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .empty-actions a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 16px;
+      font-weight: 600;
+      text-underline-offset: 4px;
+    }
+
+    .site-footer {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      background: white;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .site-footer p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 1000px) {
+      .service-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: calc(100% - 32px);
+      }
+
+      .header-content {
+        min-height: 72px;
+        gap: 12px;
+      }
+
+      .logo {
+        font-size: 23px;
+      }
+
+      .navigation {
+        gap: 14px;
+        font-size: 14px;
+      }
+
+      .hero {
+        padding-top: 40px;
+      }
+
+      .hero-description {
+        font-size: 16px;
+      }
+
+      .filter-button {
+        padding-inline: 14px;
+        font-size: 14px;
+      }
+
+      .service-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .service-card {
+        padding: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .service-card {
+        transition: none;
+      }
+
+      .service-card:hover {
+        transform: none;
+      }
+    }
+  </style>
+
+  <script src="js/services-data.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to services</a>
+
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="logo" href="index.html" aria-label="HomeEase home">
+        Home<span>Ease</span>
+      </a>
+
+      <nav class="navigation" aria-label="Main navigation">
+        <a href="services.html" aria-current="page">Services</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero container" aria-labelledby="page-heading">
+      <p class="eyebrow">A little help for your home</p>
+
+      <h1 id="page-heading">Find the right service for your home.</h1>
+
+      <p class="hero-description">
+        Explore cleaning, repairs, and everyday home services.
+        Choose what you need and request a quote.
+      </p>
+
+      <div class="search-area">
+        <label for="service-search">Search services</label>
+        <input
+          id="service-search"
+          type="search"
+          placeholder="e.g. cleaning or plumbing"
+          aria-controls="service-grid"
+          autocomplete="off"
+        >
+      </div>
+    </section>
+
+    <section class="services-section container" aria-label="Available services">
+      <div class="filters" role="group" aria-label="Filter by category">
+        <button class="filter-button" type="button" data-category="All" aria-pressed="true">All</button>
+        <button class="filter-button" type="button" data-category="Cleaning" aria-pressed="false">Cleaning</button>
+        <button class="filter-button" type="button" data-category="Plumbing" aria-pressed="false">Plumbing</button>
+        <button class="filter-button" type="button" data-category="Electrical" aria-pressed="false">Electrical</button>
+        <button class="filter-button" type="button" data-category="Assembly" aria-pressed="false">Assembly</button>
+        <button class="filter-button" type="button" data-category="Installation" aria-pressed="false">Installation</button>
+        <button class="filter-button" type="button" data-category="Painting" aria-pressed="false">Painting</button>
+        <button class="filter-button" type="button" data-category="Handyman" aria-pressed="false">Handyman</button>
+      </div>
+
+      <p id="results-count" class="results-count" role="status" aria-live="polite" aria-atomic="true"></p>
+
+      <div id="service-grid" class="service-grid"></div>
+
+      <div id="empty-state" class="empty-state" hidden>
+        <p>No services found. Try another search or contact us.</p>
+        <div class="empty-actions">
+          <a id="clear-filters" href="services.html">Clear Filters</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+
+      <div id="load-error" class="load-error" role="alert" hidden>
+        <p>Services could not be loaded. Please refresh the page or contact us.</p>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <noscript>
+        <p>Please enable JavaScript to search and browse services.</p>
+        <a href="contact.html">Contact us for help</a>
+      </noscript>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>HomeEase · Home services, made simple.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("service-search");
+      const filterButtons = document.querySelectorAll(".filter-button");
+      const grid = document.getElementById("service-grid");
+      const resultsCount = document.getElementById("results-count");
+      const emptyState = document.getElementById("empty-state");
+      const clearFiltersLink = document.getElementById("clear-filters");
+      const loadError = document.getElementById("load-error");
+
+      let selectedCategory = "All";
+
+      const icons = {
+        Cleaning: "🧹",
+        Plumbing: "🔧",
+        Electrical: "💡",
+        Assembly: "🪑",
+        Installation: "📺",
+        Painting: "🎨",
+        Handyman: "🛠️"
+      };
+
+      if (typeof services === "undefined" || !Array.isArray(services)) {
+        loadError.hidden = false;
+        searchInput.disabled = true;
+        filterButtons.forEach((button) => {
+          button.disabled = true;
+        });
+        return;
+      }
+
+      const activeServices = services.filter(
+        (service) => service.active === true
+      );
+
+      function createServiceCard(service) {
+        const card = document.createElement("a");
+        card.className = "service-card";
+        card.href = `service.html?service=${encodeURIComponent(service.slug)}`;
+
+        const icon = document.createElement("span");
+        icon.className = "service-icon";
+        icon.setAttribute("aria-hidden", "true");
+        icon.textContent = icons[service.category] || "🏠";
+
+        const category = document.createElement("p");
+        category.className = "service-category";
+        category.textContent = service.category;
+
+        const title = document.createElement("h2");
+        title.textContent = service.name;
+
+        const description = document.createElement("p");
+        description.className = "service-description";
+        description.textContent = service.shortDescription;
+
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+
+        const pricing = document.createElement("span");
+        pricing.className = "pricing";
+        pricing.textContent = service.pricingText;
+
+        const viewLink = document.createElement("span");
+        viewLink.className = "view-service";
+        viewLink.textContent = "View Service";
+
+        const arrow = document.createElement("span");
+        arrow.setAttribute("aria-hidden", "true");
+        arrow.textContent = " →";
+        viewLink.append(arrow);
+
+        footer.append(pricing, viewLink);
+        card.append(icon, category, title, description, footer);
+
+        return card;
+      }
+
+      function renderServices() {
+        const query = searchInput.value.trim().toLowerCase();
+
+        const filteredServices = activeServices.filter((service) => {
+          const matchesCategory =
+            selectedCategory === "All" ||
+            service.category === selectedCategory;
+
+          const matchesSearch =
+            service.name.toLowerCase().includes(query) ||
+            service.shortDescription.toLowerCase().includes(query);
+
+          return matchesCategory && matchesSearch;
+        });
+
+        const fragment = document.createDocumentFragment();
+
+        filteredServices.forEach((service) => {
+          fragment.append(createServiceCard(service));
+        });
+
+        grid.replaceChildren(fragment);
+
+        const count = filteredServices.length;
+        resultsCount.textContent =
+          `${count} ${count === 1 ? "service" : "services"} found`;
+
+        emptyState.hidden = count !== 0;
+        grid.hidden = count === 0;
+      }
+
+      function updateCategoryButtons() {
+        filterButtons.forEach((button) => {
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.category === selectedCategory)
+          );
+        });
+      }
+
+      searchInput.addEventListener("input", renderServices);
+
+      filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          selectedCategory = button.dataset.category;
+          updateCategoryButtons();
+          renderServices();
+        });
+      });
+
+      clearFiltersLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        searchInput.value = "";
+        selectedCategory = "All";
+        updateCategoryButtons();
+        renderServices();
+        searchInput.focus();
+      });
+
+      renderServices();
+    });
+  </script>
+</body>
+</html>

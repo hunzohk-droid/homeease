@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn how HomeEase handles information provided through its service request form.">
+  <title>Privacy | HomeEase</title>
+
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --text: #0f172a;
+      --muted: #475569;
+      --background: #f8fafc;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--background);
+      line-height: 1.75;
+    }
+
+    a {
+      color: var(--primary);
+      text-underline-offset: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(1200px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 20px;
+      padding: 12px 18px;
+      background: white;
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      background: white;
+    }
+
+    .header-content {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 24px;
+      min-height: 80px;
+      padding-block: 12px;
+    }
+
+    .logo {
+      color: var(--text);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .navigation {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 24px;
+    }
+
+    .navigation a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--muted);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .navigation a:hover {
+      color: var(--primary);
+    }
+
+    .button,
+    .navigation .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .button:hover,
+    .navigation .button:hover {
+      background: var(--primary-dark);
+      color: white;
+    }
+
+    .hero {
+      padding-block: 64px 32px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+    }
+
+    .hero-description {
+      max-width: 620px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .privacy-content {
+      max-width: 840px;
+      margin-inline: auto;
+      padding-bottom: 64px;
+    }
+
+    .draft-notice {
+      margin-bottom: 24px;
+      padding: 18px 22px;
+      border: 1px solid #fcd34d;
+      border-radius: 12px;
+      background: #fffbeb;
+      color: #78350f;
+      font-size: 14px;
+    }
+
+    .draft-notice p {
+      margin: 0;
+    }
+
+    .privacy-card {
+      padding: 36px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 4px 12px rgb(15 23 42 / 3%);
+    }
+
+    .contents {
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contents ol {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding-left: 24px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      color: var(--text);
+      font-size: 22px;
+      line-height: 1.35;
+    }
+
+    .policy-section {
+      padding-top: 28px;
+      scroll-margin-top: 24px;
+    }
+
+    .policy-section + .policy-section {
+      margin-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .policy-section p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    .policy-section p:last-child {
+      margin-bottom: 0;
+    }
+
+    .policy-section ul {
+      margin: 0 0 16px;
+      padding-left: 24px;
+      color: var(--muted);
+    }
+
+    .policy-section li + li {
+      margin-top: 10px;
+    }
+
+    .policy-section li::marker {
+      color: var(--primary);
+    }
+
+    .highlight {
+      padding: 18px 20px;
+      border-radius: 12px;
+      background: #f0fdfa;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding-block: 8px;
+      font-weight: 600;
+    }
+
+    .site-footer {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      background: white;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 20px;
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    .site-footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: calc(100% - 32px);
+      }
+
+      .header-content {
+        min-height: 72px;
+      }
+
+      .logo {
+        font-size: 23px;
+      }
+
+      .navigation {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px 12px;
+        font-size: 14px;
+      }
+
+      .navigation .button {
+        width: 100%;
+      }
+
+      .hero {
+        padding-block: 40px 28px;
+      }
+
+      .hero-description {
+        font-size: 16px;
+      }
+
+      .privacy-card {
+        padding: 24px;
+      }
+
+      .privacy-content {
+        padding-bottom: 40px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to privacy information</a>
+
+  <header class="site-header">
+    <div class="container header-content">
+      <!-- REPLACE WITH REAL BUSINESS INFO -->
+      <a class="logo" href="index.html" aria-label="HomeEase home">
+        Home<span>Ease</span>
+      </a>
+
+      <nav class="navigation" aria-label="Main navigation">
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a class="button" href="request.html">Request a Service</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero container" aria-labelledby="page-heading">
+      <p class="eyebrow">Your information</p>
+      <h1 id="page-heading">Privacy</h1>
+      <p class="hero-description">
+        What the request form collects, how the demo stores it,
+        and how information is intended to be handled when the
+        business goes live.
+      </p>
+    </section>
+
+    <div class="container">
+      <div class="privacy-content">
+        <aside class="draft-notice" aria-label="Draft privacy notice">
+          <p>
+            <strong>Demo and draft notice:</strong> Requests currently
+            stay in your browser and are not sent to HomeEase.
+            Use sample information. Business details, retention periods,
+            and the live service arrangements must be completed before
+            accepting real customer requests.
+          </p>
+        </aside>
+
+        <article class="privacy-card" aria-label="Privacy information">
+          <nav class="contents" aria-labelledby="contents-heading">
+            <h2 id="contents-heading">On this page</h2>
+            <ol>
+              <li><a href="#information">Information the form collects</a></li>
+              <li><a href="#purpose">Why it is needed</a></li>
+              <li><a href="#access">Who can see it</a></li>
+              <li><a href="#storage">Storage and retention</a></li>
+              <li><a href="#choices">Your choices</a></li>
+              <li><a href="#contact">Privacy questions</a></li>
+            </ol>
+          </nav>
+
+          <section id="information" class="policy-section" aria-labelledby="information-heading">
+            <h2 id="information-heading">1. Information the form collects</h2>
+            <p>When you submit a service request, the form saves:</p>
+
+            <ul>
+              <li><strong>Full name:</strong> to identify your request.</li>
+              <li><strong>Phone number:</strong> to discuss the request with you.</li>
+              <li>
+                <strong>Email address:</strong> optional, as another way
+                to contact you.
+              </li>
+              <li>
+                <strong>City or area and service address:</strong>
+                to identify the service location.
+              </li>
+              <li>
+                <strong>Selected service:</strong> its name and identifier.
+              </li>
+              <li>
+                <strong>Preferred date and time window:</strong>
+                to understand when you would like the work done.
+              </li>
+              <li>
+                <strong>Job details:</strong> an optional description
+                of up to 500 characters.
+              </li>
+              <li>
+                <strong>Permission to contact:</strong> your checkbox
+                selection and the time it was recorded.
+              </li>
+              <li>
+                <strong>Request records:</strong> a reference number,
+                creation time, request status, and demo-mode indicator.
+              </li>
+            </ul>
+
+            <p>
+              Do not include payment card details, passwords, identity
+              documents, or other sensitive information in job details.
+            </p>
+          </section>
+
+          <section id="purpose" class="policy-section" aria-labelledby="purpose-heading">
+            <h2 id="purpose-heading">2. Why it is needed</h2>
+
+            <p>
+              In this demo, the information is used to save a sample
+              request and display its summary. It is not sent to the
+              business, and submitting it does not arrange an appointment.
+            </p>
+
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
+            <p>
+              For the planned live service, request information will
+              help the business understand the job, check coverage,
+              discuss pricing, arrange a suitable appointment,
+              and manage the enquiry.
+            </p>
+
+            <p>
+              The permission-to-contact checkbox concerns your service
+              request. It is not a subscription to marketing messages.
+            </p>
+          </section>
+
+          <section id="access" class="policy-section" aria-labelledby="access-heading">
+            <h2 id="access-heading">3. Who can see it</h2>
+
+            <p>
+              <strong>Current demo:</strong> information is stored in
+              this browser. Business staff cannot view it remotely.
+              People with access to the same browser profile may be
+              able to read it.
+            </p>
+
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
+            <p>
+              <strong>Planned live service:</strong> customer request
+              details are intended to be accessible only to authorised
+              business staff who need them to manage the request.
+              Customer addresses and contact details will not be
+              displayed publicly.
+            </p>
+
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
+            <p>
+              Before launch, this section must describe the actual
+              hosting and service providers that process request data,
+              and any sharing needed to deliver the service.
+            </p>
+          </section>
+
+          <section id="storage" class="policy-section" aria-labelledby="storage-heading">
+            <h2 id="storage-heading">4. Storage and retention</h2>
+
+            <p>
+              <strong>Current demo:</strong> requests are saved using
+              browser localStorage under the key
+              <code>homeeaseRequests</code>. They remain after closing
+              the page and have no automatic expiry.
+            </p>
+
+            <p>
+              Demo records stay until this website's stored data is
+              cleared, the browser removes it, or the data is otherwise
+              deleted. Private browsing or browser settings may prevent
+              storage or remove records when the session ends.
+            </p>
+
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
+            <div class="highlight">
+              <p>
+                <strong>Live retention period: not yet set.</strong>
+                Before launch, the business must specify how long
+                enquiries and completed service records are kept,
+                when they are deleted, and how backup copies are handled.
+              </p>
+            </div>
+          </section>
+
+          <section id="choices" class="policy-section" aria-labelledby="choices-heading">
+            <h2 id="choices-heading">5. Your choices</h2>
+
+            <ul>
+              <li>You can browse services without submitting a request.</li>
+              <li>Email and job details are optional.</li>
+              <li>
+                You can remove demo requests by clearing this website's
+                stored data in your browser settings. This removes the
+                saved summaries from that browser.
+              </li>
+              <li>
+                Do not use a shared browser to submit personal details
+                into this demo.
+              </li>
+            </ul>
+
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
+            <p>
+              For the live service, contact the business to ask about
+              information held about you, request corrections or
+              deletion, or withdraw permission for future contact.
+              The business should explain any records it needs to
+              retain and why.
+            </p>
+          </section>
+
+          <section id="contact" class="policy-section" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">6. Privacy questions</h2>
+
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
+            <p>
+              Business responsible for request information:
+              <strong>HomeEase — final business identity and contact
+              address to be added before launch.</strong>
+            </p>
+
+            <!-- REPLACE WITH REAL BUSINESS INFO -->
+            <p>
+              Privacy email:
+              <a class="contact-link" href="mailto:privacy@homeease.example">
+                privacy@homeease.example
+              </a>
+              <br>
+              This is a placeholder address and does not receive enquiries.
+            </p>
+
+            <p>
+              You can also visit the <a href="contact.html">Contact page</a>.
+              Its current contact details are examples and must be
+              replaced before launch.
+            </p>
+
+            <p>
+              When contacting the live business, include your request
+              reference if available. Do not send passwords or payment
+              details.
+            </p>
+          </section>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="faq.html">FAQ</a>
+        <a href="privacy.html" aria-current="page">Privacy</a>
+      </nav>
+
+      <!-- REPLACE WITH REAL BUSINESS INFO -->
+      <p>HomeEase · Home services, made simple.</p>
+    </div>
+  </footer>
+</body>
+</html>

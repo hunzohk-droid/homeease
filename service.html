@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore HomeEase service details and request a quote.">
+  <title>Service Details | HomeEase</title>
+
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --text: #0f172a;
+      --muted: #475569;
+      --background: #f8fafc;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--background);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--primary);
+      text-underline-offset: 4px;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(1200px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 20px;
+      padding: 12px 18px;
+      background: white;
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      background: white;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 80px;
+    }
+
+    .logo {
+      color: var(--text);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .navigation {
+      display: flex;
+      gap: 24px;
+    }
+
+    .navigation a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--muted);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .navigation a:hover {
+      color: var(--primary);
+    }
+
+    main {
+      min-height: 70vh;
+      padding-block: 32px 64px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      margin-bottom: 24px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .service-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      align-items: start;
+      gap: 32px;
+    }
+
+    .service-content {
+      min-width: 0;
+    }
+
+    .category {
+      display: inline-block;
+      margin: 0 0 16px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #ccfbf1;
+      color: var(--primary-dark);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.15;
+      letter-spacing: -1px;
+      overflow-wrap: anywhere;
+    }
+
+    .description {
+      margin: 0 0 32px;
+      color: var(--muted);
+      font-size: 18px;
+      white-space: pre-line;
+    }
+
+    .detail-panel,
+    .request-panel {
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 4px 12px rgb(15 23 42 / 3%);
+    }
+
+    .detail-panel + .detail-panel {
+      margin-top: 24px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .task-list {
+      margin: 0;
+      padding-left: 22px;
+      color: var(--muted);
+    }
+
+    .task-list li {
+      padding-left: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    .task-list li + li {
+      margin-top: 10px;
+    }
+
+    .task-list li::marker {
+      color: var(--primary);
+    }
+
+    .request-panel {
+      position: sticky;
+      top: 24px;
+    }
+
+    .pricing-label {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .pricing {
+      margin: 0 0 16px;
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .request-note {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 20px;
+      border: 1px solid var(--primary);
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      border-color: var(--primary-dark);
+      background: var(--primary-dark);
+    }
+
+    .request-panel .button {
+      width: 100%;
+    }
+
+    .contact-link {
+      display: block;
+      width: fit-content;
+      min-height: 44px;
+      margin: 12px auto 0;
+      padding: 10px 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .message-panel {
+      max-width: 700px;
+      margin: 24px auto;
+      padding: 48px 28px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: white;
+      text-align: center;
+    }
+
+    .message-panel h1 {
+      font-size: clamp(28px, 5vw, 38px);
+    }
+
+    .message-panel p {
+      margin: 0 0 24px;
+      color: var(--muted);
+    }
+
+    .message-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .message-actions > a:not(.button) {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 10px;
+      font-weight: 600;
+    }
+
+    .site-footer {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      background: white;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .site-footer p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 850px) {
+      .service-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .request-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: calc(100% - 32px);
+      }
+
+      .header-content {
+        min-height: 72px;
+        gap: 12px;
+      }
+
+      .logo {
+        font-size: 23px;
+      }
+
+      .navigation {
+        gap: 14px;
+        font-size: 14px;
+      }
+
+      main {
+        padding-block: 24px 40px;
+      }
+
+      .description {
+        font-size: 16px;
+      }
+
+      .detail-panel,
+      .request-panel {
+        padding: 24px;
+      }
+    }
+  </style>
+
+<script src="js/services-data.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to service details</a>
+
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="logo" href="index.html" aria-label="HomeEase home">
+        Home<span>Ease</span>
+      </a>
+
+      <nav class="navigation" aria-label="Main navigation">
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <a class="back-link" href="services.html">
+      <span aria-hidden="true">←&nbsp;</span> All Services
+    </a>
+
+    <article id="service-details" class="service-layout" hidden>
+      <div class="service-content">
+        <p id="service-category" class="category"></p>
+        <h1 id="service-name"></h1>
+        <p id="service-description" class="description"></p>
+
+        <section class="detail-panel" aria-labelledby="included-heading">
+          <h2 id="included-heading">Included work</h2>
+          <ul id="included-tasks" class="task-list"></ul>
+        </section>
+
+        <section class="detail-panel" aria-labelledby="exclusions-heading">
+          <h2 id="exclusions-heading">Exclusions</h2>
+          <ul id="exclusions" class="task-list"></ul>
+        </section>
+      </div>
+
+      <aside class="request-panel" aria-label="Pricing and service request">
+        <p class="pricing-label">Pricing</p>
+        <p id="service-pricing" class="pricing"></p>
+        <p class="request-note">
+          Our team will confirm the scope, availability, and final pricing
+          before work starts.
+        </p>
+        <a id="request-link" class="button">Request This Service</a>
+        <a class="contact-link" href="contact.html">Have a question? Contact us</a>
+      </aside>
+    </article>
+
+    <section id="not-found" class="message-panel" aria-labelledby="not-found-heading" hidden>
+      <h1 id="not-found-heading">Service not found</h1>
+      <p>
+        We couldn't find that service. It may be unavailable, or the link
+        may be incorrect. Browse our services to find the help you need.
+      </p>
+      <div class="message-actions">
+        <a class="button" href="services.html">Browse Services</a>
+        <a href="contact.html">Contact us</a>
+      </div>
+    </section>
+
+    <section id="load-error" class="message-panel" aria-labelledby="load-error-heading" hidden>
+      <h1 id="load-error-heading">We couldn't load the service details</h1>
+      <p>Please refresh the page or contact us for help.</p>
+      <div class="message-actions">
+        <a class="button" href="services.html">Browse Services</a>
+        <a href="contact.html">Contact us</a>
+      </div>
+    </section>
+
+    <noscript>
+      <div class="message-panel">
+        <h1>View service details</h1>
+        <p>Please enable JavaScript to view this service.</p>
+        <a href="contact.html">Contact us for help</a>
+      </div>
+    </noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>HomeEase · Home services, made simple.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const details = document.getElementById("service-details");
+      const notFound = document.getElementById("not-found");
+      const loadError = document.getElementById("load-error");
+      const metaDescription = document.querySelector(
+        'meta[name="description"]'
+      );
+
+      function textOrFallback(value, fallback) {
+        return typeof value === "string" && value.trim()
+          ? value.trim()
+          : fallback;
+      }
+
+      function renderList(elementId, value, fallback) {
+        const list = document.getElementById(elementId);
+        const items = Array.isArray(value)
+          ? value
+              .filter((item) => typeof item === "string" && item.trim())
+              .map((item) => item.trim())
+          : [];
+
+        const fragment = document.createDocumentFragment();
+
+        (items.length ? items : [fallback]).forEach((text) => {
+          const item = document.createElement("li");
+          item.textContent = text;
+          fragment.append(item);
+        });
+
+        list.replaceChildren(fragment);
+      }
+
+      const parameters = new URLSearchParams(window.location.search);
+      const requestedSlug = (parameters.get("service") || "").trim();
+
+      if (!requestedSlug) {
+        document.title = "Service Not Found | HomeEase";
+        notFound.hidden = false;
+        return;
+      }
+
+      if (typeof services === "undefined" || !Array.isArray(services)) {
+        document.title = "Service Unavailable | HomeEase";
+        loadError.hidden = false;
+        return;
+      }
+
+      const service = services.find(
+        (item) =>
+          item &&
+          typeof item === "object" &&
+          item.slug === requestedSlug &&
+          item.active === true
+      );
+
+      if (!service) {
+        document.title = "Service Not Found | HomeEase";
+        notFound.hidden = false;
+        return;
+      }
+
+      const name = textOrFallback(service.name, "Home Service");
+      const category = textOrFallback(service.category, "Home Services");
+      const shortDescription = textOrFallback(
+        service.shortDescription,
+        `Explore our ${name} service and contact us for a quote.`
+      );
+      const description = textOrFallback(
+        service.fullDescription,
+        textOrFallback(
+          service.shortDescription,
+          "Contact our team to discuss your needs. We will confirm the work, availability, and pricing before you proceed."
+        )
+      );
+      const pricing = textOrFallback(
+        service.pricingText,
+        "Request a quote"
+      );
+
+      document.title = `${name} | HomeEase`;
+      metaDescription.content = shortDescription;
+
+      document.getElementById("service-name").textContent = name;
+      document.getElementById("service-category").textContent = category;
+      document.getElementById("service-description").textContent = description;
+      document.getElementById("service-pricing").textContent = pricing;
+
+      renderList(
+        "included-tasks",
+        service.includedTasks,
+        "Included work will be confirmed with our team before the service."
+      );
+
+      renderList(
+        "exclusions",
+        service.exclusions,
+        "Exclusions and any additional charges will be confirmed before work starts."
+      );
+
+      document.getElementById("request-link").href =
+        `request.html?service=${encodeURIComponent(service.slug)}`;
+
+      details.hidden = false;
+    });
+  </script>
+</body>
+</html>

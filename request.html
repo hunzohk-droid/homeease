@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Request a HomeEase home service.">
+  <title>Request a Service | HomeEase</title>
+
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --text: #0f172a;
+      --muted: #475569;
+      --background: #f8fafc;
+      --border: #cbd5e1;
+      --error: #b91c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--background);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--primary);
+      text-underline-offset: 4px;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: min(960px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 20px;
+      padding: 12px;
+      background: white;
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    .site-header {
+      border-bottom: 1px solid #e2e8f0;
+      background: white;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 80px;
+    }
+
+    .logo {
+      color: var(--text);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--muted);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    main {
+      padding-block: 40px 64px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 5vw, 42px);
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+
+    .intro {
+      margin: 0 0 24px;
+      color: var(--muted);
+    }
+
+    .demo-notice {
+      margin-bottom: 24px;
+      padding: 16px 20px;
+      border: 1px solid #fcd34d;
+      border-radius: 12px;
+      background: #fffbeb;
+      color: #78350f;
+    }
+
+    .demo-notice p {
+      margin: 0;
+    }
+
+    form {
+      padding: 32px;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 4px 12px rgb(15 23 42 / 3%);
+    }
+
+    .required-note {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .field {
+      min-width: 0;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input:not([type="checkbox"]),
+    select,
+    textarea {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input[aria-invalid="true"],
+    select[aria-invalid="true"],
+    textarea[aria-invalid="true"] {
+      border-color: var(--error);
+    }
+
+    .hint {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .error {
+      margin: 6px 0 0;
+      color: var(--error);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .error:empty {
+      display: none;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .checkbox-row input {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin: 4px 0 0;
+      accent-color: var(--primary);
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .checkbox-row label a {
+      display: inline-block;
+      padding-block: 6px;
+    }
+
+    .submit-area {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .submit-note {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    button {
+      min-height: 48px;
+      padding: 12px 24px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+    }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .form-message {
+      margin: 0 0 16px;
+      padding: 12px 16px;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      background: #fef2f2;
+      color: var(--error);
+    }
+
+    .site-footer {
+      padding: 24px 0;
+      border-top: 1px solid #e2e8f0;
+      background: white;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .site-footer p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: calc(100% - 32px);
+      }
+
+      .header-content {
+        min-height: 72px;
+      }
+
+      .logo {
+        font-size: 23px;
+      }
+
+      nav {
+        gap: 14px;
+        font-size: 14px;
+      }
+
+      form {
+        padding: 24px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+
+  <script src="js/services-data.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to request form</a>
+
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="logo" href="index.html" aria-label="HomeEase home">
+        Home<span>Ease</span>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <h1>Request a service</h1>
+    <p class="intro">
+      Tell us what you need and choose your preferred date and time.
+    </p>
+
+    <div class="demo-notice">
+      <p>
+        <strong>DEMO MODE:</strong> This form saves your request only in
+        this browser. It does not send anything to HomeEase.
+        Use sample contact details and addresses.
+      </p>
+    </div>
+
+    <noscript>
+      <p>Enable JavaScript to use this demo request form.</p>
+    </noscript>
+
+    <form id="request-form" novalidate>
+      <p class="required-note">Fields marked * are required.</p>
+
+      <div id="form-message" class="form-message" role="alert" hidden></div>
+
+      <div class="form-grid">
+        <div class="field full-width">
+          <label for="service">Service *</label>
+          <select
+            id="service"
+            name="service"
+            required
+            aria-describedby="service-error"
+          >
+            <option value="">Choose a service</option>
+          </select>
+          <p id="service-error" class="error"></p>
+        </div>
+
+        <div class="field">
+          <label for="full-name">Full name *</label>
+          <input
+            id="full-name"
+            name="fullName"
+            type="text"
+            autocomplete="name"
+            maxlength="120"
+            required
+            aria-describedby="full-name-error"
+          >
+          <p id="full-name-error" class="error"></p>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone *</label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            autocomplete="tel"
+            maxlength="30"
+            required
+            aria-describedby="phone-hint phone-error"
+          >
+          <p id="phone-hint" class="hint">
+            Include your country code if needed.
+          </p>
+          <p id="phone-error" class="error"></p>
+        </div>
+
+        <div class="field">
+          <label for="email">Email (optional)</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            maxlength="254"
+            aria-describedby="email-error"
+          >
+          <p id="email-error" class="error"></p>
+        </div>
+
+        <div class="field">
+          <label for="area">City / area *</label>
+          <select
+            id="area"
+            name="area"
+            required
+            aria-describedby="area-hint area-error"
+          >
+            <option value="">Choose an area</option>
+            <!-- Replace these demo areas with real coverage before launch. -->
+            <option value="demo-central">Central Area (demo)</option>
+            <option value="demo-north">North Area (demo)</option>
+            <option value="demo-south">South Area (demo)</option>
+          </select>
+          <p id="area-hint" class="hint">
+            Sample areas for this demo.
+          </p>
+          <p id="area-error" class="error"></p>
+        </div>
+
+        <div class="field full-width">
+          <label for="address">Service address *</label>
+          <textarea
+            id="address"
+            name="address"
+            autocomplete="street-address"
+            maxlength="500"
+            required
+            aria-describedby="address-error"
+          ></textarea>
+          <p id="address-error" class="error"></p>
+        </div>
+
+        <div class="field">
+          <label for="preferred-date">Preferred date *</label>
+          <input
+            id="preferred-date"
+            name="preferredDate"
+            type="date"
+            required
+            aria-describedby="preferred-date-hint preferred-date-error"
+          >
+          <p id="preferred-date-hint" class="hint">
+            Choose today or a future date.
+          </p>
+          <p id="preferred-date-error" class="error"></p>
+        </div>
+
+        <div class="field">
+          <label for="time-window">Preferred time window *</label>
+          <select
+            id="time-window"
+            name="timeWindow"
+            required
+            aria-describedby="time-window-error"
+          >
+            <option value="">Choose a time window</option>
+            <option value="Morning">Morning</option>
+            <option value="Afternoon">Afternoon</option>
+            <option value="Evening">Evening</option>
+          </select>
+          <p id="time-window-error" class="error"></p>
+        </div>
+
+        <div class="field full-width">
+          <label for="job-details">Job details (optional)</label>
+          <textarea
+            id="job-details"
+            name="jobDetails"
+            maxlength="500"
+            aria-describedby="job-details-hint job-details-error"
+          ></textarea>
+          <p id="job-details-hint" class="hint">
+            <span id="character-count">0</span>/500 characters
+          </p>
+          <p id="job-details-error" class="error"></p>
+        </div>
+
+        <div class="field full-width">
+          <div class="checkbox-row">
+            <input
+              id="permission"
+              name="permission"
+              type="checkbox"
+              required
+              aria-describedby="permission-error"
+            >
+            <label for="permission">
+              I give HomeEase permission to contact me about this request. *
+              Read the <a href="privacy.html">Privacy policy</a>.
+            </label>
+          </div>
+          <p id="permission-error" class="error"></p>
+        </div>
+      </div>
+
+      <div class="submit-area">
+        <p class="submit-note">
+          This is a service request. Our team will confirm availability
+          and pricing with you.
+        </p>
+        <button id="submit-button" type="submit" disabled>
+          Send Request
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>HomeEase · Home services, made simple.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("request-form");
+      const submitButton = document.getElementById("submit-button");
+      const formMessage = document.getElementById("form-message");
+      const characterCount = document.getElementById("character-count");
+
+      const fields = {
+        service: document.getElementById("service"),
+        fullName: document.getElementById("full-name"),
+        phone: document.getElementById("phone"),
+        email: document.getElementById("email"),
+        area: document.getElementById("area"),
+        address: document.getElementById("address"),
+        preferredDate: document.getElementById("preferred-date"),
+        timeWindow: document.getElementById("time-window"),
+        jobDetails: document.getElementById("job-details"),
+        permission: document.getElementById("permission")
+      };
+
+      // success.html can read this array and find the request using
+      // the "reference" query parameter in its URL.
+      const STORAGE_KEY = "homeeaseRequests";
+      let submitting = false;
+      let submitted = false;
+
+      function showFormMessage(message) {
+        formMessage.textContent = message;
+        formMessage.hidden = !message;
+      }
+
+      function localDateString(date = new Date()) {
+        const year = String(date.getFullYear()).padStart(4, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      // Demo dates use the visitor's local timezone.
+      // Phase B should validate dates in the business's timezone.
+      function updateMinimumDate() {
+        fields.preferredDate.min = localDateString();
+      }
+
+      updateMinimumDate();
+      window.addEventListener("focus", updateMinimumDate);
+
+      if (typeof services === "undefined" || !Array.isArray(services)) {
+        showFormMessage(
+          "Services could not be loaded. Please refresh the page."
+        );
+        fields.service.disabled = true;
+        return;
+      }
+
+      const activeServices = services.filter(
+        (service) =>
+          service &&
+          service.active === true &&
+          typeof service.slug === "string" &&
+          service.slug.trim() &&
+          typeof service.name === "string" &&
+          service.name.trim()
+      );
+
+      if (!activeServices.length) {
+        showFormMessage(
+          "No services are available right now. Please contact us for help."
+        );
+        fields.service.disabled = true;
+        return;
+      }
+
+      activeServices.forEach((service) => {
+        const option = document.createElement("option");
+        option.value = service.slug;
+        option.textContent = service.name;
+        fields.service.append(option);
+      });
+
+      const requestedSlug = new URLSearchParams(
+        window.location.search
+      ).get("service");
+
+      if (activeServices.some((service) => service.slug === requestedSlug)) {
+        fields.service.value = requestedSlug;
+      }
+
+      submitButton.disabled = false;
+
+      function setError(field, message) {
+        document.getElementById(`${field.id}-error`).textContent = message;
+
+        if (message) {
+          field.setAttribute("aria-invalid", "true");
+        } else {
+          field.removeAttribute("aria-invalid");
+        }
+
+        return !message;
+      }
+
+      function validDate(value) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+
+        const [year, month, day] = value.split("-").map(Number);
+        const date = new Date(0);
+        date.setHours(0, 0, 0, 0);
+        date.setFullYear(year, month - 1, day);
+
+        return (
+          date.getFullYear() === year &&
+          date.getMonth() === month - 1 &&
+          date.getDate() === day
+        );
+      }
+
+      function validateField(field) {
+        const value = field.value.trim();
+        let error = "";
+
+        switch (field.id) {
+          case "service":
+            if (!activeServices.some((service) => service.slug === value)) {
+              error = "Please choose an available service.";
+            }
+            break;
+
+          case "full-name":
+            if (!value) {
+              error = "Please enter your full name.";
+            } else if (value.length > 120) {
+              error = "Please use 120 characters or fewer.";
+            }
+            break;
+
+          case "phone": {
+            const digitCount = value.replace(/\D/g, "").length;
+
+            if (!value) {
+              error = "Please enter your phone number.";
+            } else if (
+              !/^\+?[\d\s().-]+$/.test(value) ||
+              digitCount < 7 ||
+              digitCount > 15
+            ) {
+              error = "Enter a phone number with 7–15 digits.";
+            }
+            break;
+          }
+
+          case "email":
+            if (value) {
+              field.value = value;
+              if (field.validity.typeMismatch || value.length > 254) {
+                error = "Please enter a valid email address.";
+              }
+            }
+            break;
+
+          case "area":
+            if (
+              !value ||
+              !Array.from(field.options).some(
+                (option) => option.value === value && !option.disabled
+              )
+            ) {
+              error = "Please choose your city or area.";
+            }
+            break;
+
+          case "address":
+            if (!value) {
+              error = "Please enter the service address.";
+            } else if (value.length > 500) {
+              error = "Please use 500 characters or fewer.";
+            }
+            break;
+
+          case "preferred-date":
+            if (!value) {
+              error = "Please choose a preferred date.";
+            } else if (!validDate(value)) {
+              error = "Please choose a valid date.";
+            } else if (value < localDateString()) {
+              error = "Please choose today or a future date.";
+            }
+            break;
+
+          case "time-window":
+            if (!["Morning", "Afternoon", "Evening"].includes(value)) {
+              error = "Please choose a preferred time window.";
+            }
+            break;
+
+          case "job-details":
+            if (field.value.length > 500) {
+              error = "Job details must be 500 characters or fewer.";
+            }
+            break;
+
+          case "permission":
+            if (!field.checked) {
+              error = "Please give permission to contact you about this request.";
+            }
+            break;
+        }
+
+        return setError(field, error);
+      }
+
+      Object.values(fields).forEach((field) => {
+        field.addEventListener("blur", () => validateField(field));
+
+        const eventName =
+          field.tagName === "SELECT" || field.type === "checkbox"
+            ? "change"
+            : "input";
+
+        field.addEventListener(eventName, () => {
+          if (field.getAttribute("aria-invalid") === "true") {
+            validateField(field);
+          }
+        });
+      });
+
+      fields.jobDetails.addEventListener("input", () => {
+        characterCount.textContent = fields.jobDetails.value.length;
+      });
+
+      function generateReference(existingRequests) {
+        const year = new Date().getFullYear();
+        const usedReferences = new Set(
+          existingRequests.map((request) => request.reference)
+        );
+
+        for (let attempt = 0; attempt < 100; attempt++) {
+          const bytes = new Uint8Array(4);
+          crypto.getRandomValues(bytes);
+
+          const suffix = Array.from(
+            bytes,
+            (byte) => byte.toString(16).padStart(2, "0")
+          ).join("").toUpperCase();
+
+          const reference = `HE-${year}-${suffix}`;
+
+          if (!usedReferences.has(reference)) {
+            return reference;
+          }
+        }
+
+        throw new Error("Could not generate a unique reference.");
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (submitting || submitted) return;
+
+        showFormMessage("");
+        updateMinimumDate();
+
+        let firstInvalidField = null;
+
+        Object.values(fields).forEach((field) => {
+          if (!validateField(field) && !firstInvalidField) {
+            firstInvalidField = field;
+          }
+        });
+
+        if (firstInvalidField) {
+          showFormMessage("Please check the highlighted fields.");
+          firstInvalidField.focus();
+          return;
+        }
+
+        submitting = true;
+        submitButton.disabled = true;
+        submitButton.textContent = "Saving request…";
+
+        try {
+          // DEMO MODE: Phase B replaces this localStorage persistence
+          // with a real server API, server-side validation, and a database.
+          const savedValue = localStorage.getItem(STORAGE_KEY);
+          const existingRequests =
+            savedValue === null ? [] : JSON.parse(savedValue);
+
+          if (
+            !Array.isArray(existingRequests) ||
+            existingRequests.some(
+              (request) => !request || typeof request !== "object"
+            )
+          ) {
+            throw new Error("Stored demo requests are invalid.");
+          }
+
+          const selectedService = activeServices.find(
+            (service) => service.slug === fields.service.value
+          );
+          const timestamp = new Date().toISOString();
+          const reference = generateReference(existingRequests);
+
+          const request = {
+            reference,
+            serviceSlug: selectedService.slug,
+            serviceName: selectedService.name,
+            fullName: fields.fullName.value.trim(),
+            phone: fields.phone.value.trim(),
+            email: fields.email.value.trim(),
+            area: fields.area.value,
+            areaName: fields.area.selectedOptions[0].textContent,
+            address: fields.address.value.trim(),
+            preferredDate: fields.preferredDate.value,
+            timeWindow: fields.timeWindow.value,
+            jobDetails: fields.jobDetails.value.trim(),
+            permissionToContact: fields.permission.checked,
+            consentTimestamp: timestamp,
+            createdAt: timestamp,
+            status: "New",
+            demoMode: true
+          };
+
+          existingRequests.push(request);
+
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(existingRequests)
+          );
+
+          submitted = true;
+          submitButton.textContent = "Request saved";
+
+          window.location.assign(
+            `success.html?reference=${encodeURIComponent(reference)}`
+          );
+        } catch (error) {
+          showFormMessage(
+            "We couldn't save your demo request in this browser. " +
+            "Your entries are still here. Check that browser storage is " +
+            "available, then try again."
+          );
+        } finally {
+          submitting = false;
+
+          if (!submitted) {
+            submitButton.disabled = false;
+            submitButton.textContent = "Send Request";
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
