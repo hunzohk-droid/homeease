@@ -6,6 +6,13 @@ import string
 from flask import Flask, jsonify, redirect, request, send_from_directory, session, url_for
 
 from init_db import CREATE_TABLE_SQL
+
+# Build the logbook tables when the server starts
+conn = sqlite3.connect("homeease.db")
+conn.execute(CREATE_TABLE_SQL)
+conn.commit()
+conn.close()
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
 
