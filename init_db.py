@@ -1,9 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect("homeease.db")
-cur = conn.cursor()
-
-cur.execute("""
+CREATE_TABLE_SQL = """
 CREATE TABLE IF NOT EXISTS requests (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     reference TEXT NOT NULL,
@@ -18,8 +15,14 @@ CREATE TABLE IF NOT EXISTS requests (
     details TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
 )
-""")
+"""
 
-conn.commit()
-conn.close()
-print("Logbook ready: homeease.db")
+def init_db():
+    conn = sqlite3.connect("homeease.db")
+    conn.execute(CREATE_TABLE_SQL)
+    conn.commit()
+    conn.close()
+    print("Logbook ready: homeease.db")
+
+if __name__ == "__main__":
+    init_db()

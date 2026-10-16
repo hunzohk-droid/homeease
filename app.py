@@ -5,6 +5,7 @@ import string
 
 from flask import Flask, jsonify, redirect, request, send_from_directory, session, url_for
 
+from init_db import CREATE_TABLE_SQL
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
 
